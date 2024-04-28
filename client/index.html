@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Add Metadata and title for webpage -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Final Project: Inventory Management System</title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+    <!-- Session management script; allows dynamic content visibility -->
+    <script src="./checkSession.js"></script>
+</head>
+
+<body>
+    <h1>Final Project - Cody Bennett</h1>
+    <button id="auth-login-button" onclick="document.getElementById('login-menu').style.display='block'"
+        style="display: inline-block;margin-top:2px;min-height:1px;min-width:1px;">Login</button>
+    <div id="login-menu" class="modal"> <span onclick="document.getElementById('login-menu').style.display='none'"
+            class="close" title="Close Modal">&times;</span>
+        <form name="login-modal-form" id="login-modal-form" class="modal-content" onsubmit="login()">
+            <div class="container">
+                <h2>Login</h2>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+                <div class="clearfix">
+                    <button type="submit" class="submitbtn" id="submitbtn">Login</button>
+                    <button type="button" onclick="document.getElementById('login-menu').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Logout button is hidden unless user is logged in -->
+    <button id="auth-logout-button" onclick="logout()" style="display: none;">Logout</button>
+
+
+    <!-- Create "pop up" modal menu for pretty form inputs -->
+    <div id="add-pop-menu" class="modal"> <span onclick="document.getElementById('add-pop-menu').style.display='none'"
+            class="close" title="Close Modal">&times;</span>
+        <form name="modal-form" id="modal-form" class="modal-content" onsubmit="addItem()">
+            <div class="container">
+                <h2>Add New Item to Inventory</h2>
+                <label for="item_name_modal">Item Name:</label>
+                <input type="text" id="item_name_modal" name="item_name_modal" required><br>
+                <label for="description_modal">Description:</label>
+                <input type="text" id="description_modal" name="description_modal" required><br>
+                <label for="supplier_modal">Supplier:</label>
+                <input type="text" id="supplier_modal" name="supplier_modal" required><br>
+
+                <label for="quantity_modal">Quantity:</label>
+                <input type="number" id="quantity_modal" name="quantity_modal" required><br>
+                <div class="clearfix">
+                    <button type="submit" class="submitbtn" id="submitbtn">Add Item</button>
+                    <button type="button" onclick="document.getElementById('add-pop-menu').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <!-- Create "pop up" modal menu for pretty form inputs -->
+    <div id="remove-pop-menu" class="modal"> <span
+            onclick="document.getElementById('remove-pop-menu').style.display='none'" class="close"
+            title="Close Modal">&times;</span>
+        <form name="modal-form" id="modal-form" class="modal-content" onsubmit="removeItem()">
+            <div class="container">
+                <h2>Remove Item from Inventory</h2>
+                <label for="remove_item_name_modal">Item Name:</label>
+                <input type="text" id="remove_item_name_modal" name="remove_item_name_modal"><br>
+                <label for="remove_description_modal">Description:</label>
+                <input type="text" id="remove_description_modal" name="remove_description_modal"><br>
+                <label for="remove_supplier_modal">Supplier:</label>
+                <input type="text" id="remove_supplier_modal" name="remove_supplier_modal"><br>
+
+                <label for="remove_quantity_modal">Quantity:</label>
+                <input type="number" id="remove_quantity_modal" name="remove_quantity_modal"><br>
+                <div class="clearfix">
+                    <button type="submit" class="submitbtn" id="submitbtn">Remove Item</button>
+                    <button type="button" onclick="document.getElementById('remove-pop-menu').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Create "pop up" modal menu for pretty form inputs -->
+    <div id="update-pop-menu" class="modal"> <span
+            onclick="document.getElementById('update-pop-menu').style.display='none'" class="close"
+            title="Close Modal">&times;</span>
+        <form name="modal-form" id="modal-form" class="modal-content" onsubmit="updateCheckedItems()">
+            <div class="container">
+                <h2>Update Item from Inventory</h2>
+                <label for="update_item_name_modal">Item Name:</label>
+                <input type="text" id="update_item_name_modal" name="update_item_name_modal"><br>
+                <label for="update_description_modal">Description:</label>
+                <input type="text" id="update_description_modal" name=update_description_modal"><br>
+                <label for="update_supplier_modal">Supplier:</label>
+                <input type="text" id="update_supplier_modal" name="update_supplier_modal"><br>
+
+                <label for="update_quantity_modal">Quantity:</label>
+                <input type="number" id="update_quantity_modal" name="update_quantity_modal"><br>
+                <div class="clearfix">
+                    <button type="submit" class="submitbtn" id="submitbtn">Update Item(s)</button>
+                    <button type="button" onclick="document.getElementById('update-pop-menu').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <main class="grid">
+
+        <!-- Article content that will be on the left side of page -->
+        <article>
+            <h2>
+                Instructions
+            </h2>
+            <p>This utility allows one to add and search for various items based on input.</p>
+
+            <!-- Add section so it sits below and more accessible instructions -->
+            <section>
+                <ul>
+                    <li>Click the green Add Item button to open the menu for adding a new item to the catalog</li>
+                    <li>Click "Show All Items" to display all current entries in the catalog</li>
+                    <li>Fill applicable fields and click "Search Catalog" to "fuzzy-search" the catalog using the
+                        provided form inputs</li>
+                    <li>To reset the form and display all records click "Show All Items"</li>
+                </ul>
+            </section>
+        </article>
+
+        <!-- Content that will be dynamically updated to the right of page -->
+        <aside id="aside">
+            <h2>
+                Search Result
+            </h2>
+            <!-- Show all will be available for readonly/unauthenticated requests -->
+            <button class="showallbttn" onclick="resetSearch()" style="width:auto;">Show All Items</button>
+            <form id="itemSearch" onsubmit="searchItem()">
+                <label for="item_name">Name:</label>
+                <input type="text" id="item_name" name="item_name" required><br>
+                <label for="description" aria-readonly="true">Description:</label>
+                <input type="text" id="description" readonly name="description"><br>
+                <label for="supplier" aria-readonly="true">Supplier:</label>
+                <input type="text" id="supplier" name="supplier"><br>
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity"><br>
+                <div class="clearfix">
+                    <button type="submit" class="submitbtn" id="submitbtn">Search Items</button>
+                    <button type="button" onclick="document.getElementById('itemSearch').reset()"
+                        class="cancelbtn">Cancel</button>
+                </div>
+            </form>
+            <table id="itemsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Supplier</th>
+                        <th>Quantity</th>
+                        <th>Update/Remove</th>
+                    </tr>
+                </thead>
+                <tbody id="items">
+                </tbody>
+            </table>
+
+            <!-- On Click button to remove checked items from list -->
+            <button id="remove-selected-item-bttn" class="removebttn" onclick="removeCheckedItems()"
+                style="width:auto;">Remove Selected Items</button>
+            <button id="update-selected-item-bttn" class="removebttn"
+                onclick="document.getElementById('update_item_name_modal').value='Cannot Change Multiple Names at Once';document.getElementById('update_item_name_modal').readOnly=true;document.getElementById('update-pop-menu').style.display='block'"
+                style="width: auto;">Update Selected Items</button>
+
+        </aside>
+
+        <!-- CRUD operation buttons visibility managed by checkSession utility -->
+        <button id="add-item-bttn" class="admin-bttn"
+            onclick="document.getElementById('add-pop-menu').style.display='block'" style="width:auto;">Add
+            Item</button>
+        <button id="remove-item-bttn" class="admin-bttn"
+            onclick="document.getElementById('remove-pop-menu').style.display='block'" style="width:auto;">Remove
+            Item</button>
+        <button id="update-item-bttn" class="admin-bttn"
+            onclick="document.getElementById('update-pop-menu').style.display='block'" style="width:auto;">Update
+            Item</button>
+    </main>
+
+</body>
+
+<footer>
+    <!-- Non-content information; included what was required for previous module as well -->
+    <address>
+        Written by <a href="mailto:codybennett@ou.edu">Cody Bennett</a>.<br>
+        View my LinkedIn: <a href="http://www.linkedin.com/in/cody-bennett-2087467b/">Cody Bennett</a><br>
+        Norman, Oklahoma
+        USA
+    </address>
+</footer>
+
+<!-- Bundled scripts at bottom of file for ease of reading.  -->
+<script>
+    function addItem() {
+        event.preventDefault();
+        const itemData = {
+            name: document.getElementById('item_name_modal').value,
+            description: document.getElementById('description_modal').value,
+            supplier: document.getElementById('supplier_modal').value,
+            quantity: document.getElementById('quantity_modal').value,
+        };
+        console.log(itemData);
+        fetch(`http://localhost:3000/add-item`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(() => {
+                alert('Item added successfully');
+                document.getElementById('add-pop-menu').style.display = 'none';
+            })
+
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the item');
+            });
+    };
+</script>
+
+
+
+<script>
+    function updateCheckedItems() {
+        var checkedItems = [...document.querySelectorAll('input[name=checker]:checked')].map(e => e.value);
+        console.log(checkedItems)
+        event.preventDefault();
+        const itemData = {
+            description: document.getElementById('update_description_modal').value,
+            supplier: document.getElementById('update_supplier_modal').value,
+            quantity: document.getElementById('update_quantity_modal').value,
+            id: checkedItems
+        };
+        console.log(itemData);
+        fetch(`http://localhost:3000/update-item`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(() => {
+                alert('Updated item(s) successfully');
+                document.getElementById('update-pop-menu').style.display = 'none';
+            })
+
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the item');
+            });
+    };
+</script>
+
+<script>
+    function removeItem() {
+        event.preventDefault();
+        const itemData = {
+            name: document.getElementById('remove_item_name_modal').value,
+            description: document.getElementById('remove_description_modal').value,
+            supplier: document.getElementById('remove_supplier_modal').value,
+            quantity: document.getElementById('remove_quantity_modal').value,
+        };
+        console.log(itemData);
+        fetch(`http://localhost:3000/delete-item`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(() => {
+                alert('Deleted item(s) successfully');
+                document.getElementById('remove-pop-menu').style.display = 'none';
+            })
+
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the item');
+            });
+    };
+</script>
+<script>
+    function removeCheckedItems() {
+        var checkedItems = [...document.querySelectorAll('input[name=checker]:checked')].map(e => e.value);
+        console.log(checkedItems)
+        event.preventDefault();
+        const itemData = {
+            id: checkedItems
+        };
+        console.log(itemData);
+        fetch(`http://localhost:3000/delete-item`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(() => {
+                alert('Deleted item(s) successfully');
+                document.getElementById('remove-pop-menu').style.display = 'none';
+            })
+
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the item');
+            });
+    };
+</script>
+<script>
+    function resetSearch() {
+        document.getElementById('itemSearch').reset();
+        searchItem();
+    }
+</script>
+
+
+<script>
+    function searchItem() {
+        event.preventDefault();
+        const itemData = {
+            name: document.getElementById('item_name').value,
+            description: document.getElementById('description').value,
+            supplier: document.getElementById('supplier').value
+        };
+        fetch(`http://localhost:3000/search-item`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const itemsTableBody = document.getElementById('itemsTable').getElementsByTagName('tbody')[0];
+                itemsTableBody.innerHTML = '';
+                data.forEach(item => {
+                    const row = itemsTableBody.insertRow();
+                    row.insertCell(0).innerHTML =
+                        `<td><input class="custom-control-input inp" name="checker" type="checkbox" value="` +
+                        item.id + `"></td>`
+                    row.insertCell(0).textContent = item.id;
+                    row.insertCell(1).textContent = item.name;
+                    row.insertCell(2).textContent = item.description;
+                    row.insertCell(3).textContent = item.supplier;
+                    row.insertCell(4).textContent = item.quantity;
+                })
+            })
+
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while searching the item catalog');
+            });
+    };
+</script>
+
+
+
+<script>
+    function login() {
+        event.preventDefault();
+        const loginData = {
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value
+        };
+        fetch(`http://localhost:3000/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loginData)
+            })
+            .then(() => {
+                alert('Authentication Successful');
+                document.getElementById('login-menu').style.display = 'none';
+                window.location.href = "/"
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while searching the item catalog');
+            });
+    };
+</script>
+
+<script>
+    function logout() {
+        event.preventDefault();
+        fetch(`http://localhost:3000/logout`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(() => {
+                window.location.href = "/"
+            })
+
+
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while logging out of the item catalog');
+            });
+    };
+</script>
+
+</html>
