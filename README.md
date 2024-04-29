@@ -11,7 +11,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/codybennett/LIS4613-Final-Project">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="Testing Screenshot.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">LIS4613-Final-Project</h3>
