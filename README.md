@@ -181,25 +181,25 @@ Once Authenticated Three buttons will appear on the left and two buttons will ap
 
 * Add Item
 
-* This option allows one to add a new item to the inventory based on inputs.
+  * This option allows one to add a new item to the inventory based on inputs.
 
 * Update Item
 
-* This option allows one to update items based on inputs.
-* The button located under admin console will allow fuzzy matching for updating multiple records based on the name field and/or combination of other fields
+  * This option allows one to update items based on inputs.
+  * The button located under admin console will allow fuzzy matching for updating multiple records based on the name field and/or combination of other fields
 
 * Remove Item
 
-* This option allows one to remove an item or items from the inventory based on fuzzy matching names.
+  * This option allows one to remove an item or items from the inventory based on fuzzy matching names.
 
 * Remove Selected Items
 
-* This option allows one to remove multiple items at once via checkbox selectors.
+  * This option allows one to remove multiple items at once via checkbox selectors.
 
 * Update Items
 
-* This option allows one to update an item multiple items at once via checkbox selectors.
-* **Note: You cannot update the name field when using multiple checkboxes**
+  * This option allows one to update an item multiple items at once via checkbox selectors.
+  * **Note: You cannot update the name field when using multiple checkboxes**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
