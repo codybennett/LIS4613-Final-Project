@@ -121,12 +121,12 @@ app.post('/login', (req, res) => {
             res.cookie("csrf", token, {
                 httpOnly: true,
                 sameSite: 'strict',
-                secure: false
+                secure: true
             })
             res.cookie("sessionID", req.session.id, {
                 httpOnly: true,
                 sameSite: 'strict',
-                secure: false
+                secure: true
             })
             req.session.save()
         }
@@ -137,7 +137,7 @@ app.post('/login', (req, res) => {
 
 // Logout route
 app.post('/logout', (req, res) => {
-    console.log(sessionStore.destroy(req.cookies["sessionID"]))
+    sessionStore.destroy(req.cookies["sessionID"])
     res.clearCookie("sessionID")
     res.clearCookie("csrf")
     res.redirect('/')

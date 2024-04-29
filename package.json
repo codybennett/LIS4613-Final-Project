@@ -1,0 +1,26 @@
+{
+  "name": "lis4613-final-project",
+  "version": "1.0.0",
+  "description": "Final Project for University of Oklahoma LIS4613 Dynamic Web Development",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codybennett/LIS4613-Final-Project.git"
+  },
+  "author": "Cody Bennett",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codybennett/LIS4613-Final-Project/issues"
+  },
+  "homepage": "https://github.com/codybennett/LIS4613-Final-Project#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
