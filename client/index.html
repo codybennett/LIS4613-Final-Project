@@ -160,7 +160,56 @@
                         provided form inputs</li>
                     <li>To reset the form and display all records click "Show All Items"</li>
                 </ul>
+
             </section>
+            <h4>Admin Console</h4>
+            Once Authenticated Three buttons will appear on the left and two buttons will appear on the right under the table
+            <ul>
+                <li>Add Item</li>
+                <ul>
+                    <li>This option allows one to add a new item to the inventory based on inputs.</li>
+                </ul>
+                <li>Update Item</li>
+                <ul>
+                    <li>This option allows one to update items based on inputs.</li>
+                    <li>The button located under admin console will allow fuzzy matching for updating multiple records based on the name field and/or combination of other fields</li>
+                </ul>
+                <li>Remove Item</li>
+                <ul>
+                    <li>This option allows one to remove an item or items from the inventory based on fuzzy matching names.</li>
+                </ul>
+                 <li>Remove Selected Items</li>
+                <ul>
+                    <li>This option allows one to remove multiple items at once via checkbox selectors.</li>
+                </ul>
+                 <li>Update Items</li>
+                <ul>
+                    <li>This option allows one to update an item multiple items at once via checkbox selectors.
+                        <li>
+<strong>Note: You cannot update the name field when using multiple checkboxes</strong>
+
+                        </li>
+
+                    </li>
+                </ul>
+            </ul>
+            </ul>
+            <div class="admin-area">
+
+
+                <!-- CRUD operation buttons visibility managed by checkSession utility -->
+                <button id="add-item-bttn" class="admin-bttn"
+                    onclick="document.getElementById('add-pop-menu').style.display='block'">Add
+                    Item</button>
+
+                <button id="update-item-bttn" class="admin-bttn"
+                    onclick=" document.getElementById('update_item_name_modal').style.readOnly = false;
+        document.getElementById('update_item_name_modal').value = '';document.getElementById('update-pop-menu').style.display='block'">Update
+                    Item</button>
+                <button id="remove-item-bttn" class="admin-bttn"
+                    onclick="document.getElementById('remove-pop-menu').style.display='block'">Remove
+                    Item</button>
+            </div>
         </article>
 
         <!-- Content that will be dynamically updated to the right of page -->
@@ -210,22 +259,7 @@
             </div>
         </aside>
 
-        <div class="admin-area">
 
-
-            <!-- CRUD operation buttons visibility managed by checkSession utility -->
-            <button id="add-item-bttn" class="admin-bttn"
-                onclick="document.getElementById('add-pop-menu').style.display='block'">Add
-                Item</button>
-            <button id="remove-item-bttn" class="admin-bttn"
-                onclick="document.getElementById('remove-pop-menu').style.display='block'">Remove
-                Item</button>
-            <button id="update-item-bttn" class="admin-bttn"
-                onclick=" document.getElementById('update_item_name_modal').style.readOnly = false;
-        document.getElementById('update_item_name_modal').value = '';document.getElementById('update-pop-menu').style.display='block'">Update
-                Item</button>
-
-        </div>
     </main>
 
 </body>
