@@ -12,9 +12,15 @@
 </head>
 
 <body>
-    <h1>Final Project - Cody Bennett</h1>
-    <button id="auth-login-button" onclick="document.getElementById('login-menu').style.display='block'"
-        style="display: inline-block;margin-top:2px;min-height:1px;min-width:1px;">Login</button>
+    <div class="page_top">
+        <h1>Final Project - Cody Bennett</h1>
+        <button id="auth-login-button" onclick="document.getElementById('login-menu').style.display='block'"
+            class="auth-button">Login</button>
+        <!-- Logout button is hidden unless user is logged in -->
+        <button id="auth-logout-button" class="auth-button" onclick="logout()">Logout</button>
+
+    </div>
+
     <div id="login-menu" class="modal"> <span onclick="document.getElementById('login-menu').style.display='none'"
             class="close" title="Close Modal">&times;</span>
         <form name="login-modal-form" id="login-modal-form" class="modal-content" onsubmit="login()">
@@ -32,8 +38,6 @@
             </div>
         </form>
     </div>
-    <!-- Logout button is hidden unless user is logged in -->
-    <button id="auth-logout-button" onclick="logout()" style="display: none;">Logout</button>
 
 
     <!-- Create "pop up" modal menu for pretty form inputs -->
@@ -87,16 +91,43 @@
     </div>
 
     <!-- Create "pop up" modal menu for pretty form inputs -->
+    <div id="update-checked-pop-menu" class="modal"> <span
+            onclick="document.getElementById('update-checked-pop-menu').style.display='none'" class="close"
+            title="Close Modal">&times;</span>
+        <form name="modal-form" id="modal-form" class="modal-content" onsubmit="updateCheckedItems()">
+            <div class="container">
+                <h2>Update Item from Inventory</h2>
+                <label for="update_checked_item_name_modal">Item Name:</label>
+                <input type="text" id="update_checked_item_name_modal" name="update_checked_item_name_modal"><br>
+                <label for="update_checked_description_modal">Description:</label>
+                <input type="text" id="update_checked_description_modal" name="update_checked_description_modal"><br>
+                <label for="update_checked_supplier_modal">Supplier:</label>
+                <input type="text" id="update_checked_supplier_modal" name="update_checked_supplier_modal"><br>
+
+                <label for="update_checked_quantity_modal">Quantity:</label>
+                <input type="number" id="update_checked_quantity_modal" name="update_checked_quantity_modal"><br>
+                <div class="clearfix">
+                    <button type="submit" class="submitbtn" id="submitbtn">Update Item(s)</button>
+                    <button type="button"
+                        onclick="document.getElementById('update-checked-pop-menu').style.display='none'"
+                        class="cancelbtn">Cancel</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Create "pop up" modal menu for pretty form inputs -->
     <div id="update-pop-menu" class="modal"> <span
             onclick="document.getElementById('update-pop-menu').style.display='none'" class="close"
             title="Close Modal">&times;</span>
-        <form name="modal-form" id="modal-form" class="modal-content" onsubmit="updateCheckedItems()">
+        <form name="modal-form" id="modal-form" class="modal-content" onsubmit="updateItems()">
             <div class="container">
                 <h2>Update Item from Inventory</h2>
                 <label for="update_item_name_modal">Item Name:</label>
                 <input type="text" id="update_item_name_modal" name="update_item_name_modal"><br>
                 <label for="update_description_modal">Description:</label>
-                <input type="text" id="update_description_modal" name=update_description_modal"><br>
+                <input type="text" id="update_description_modal" name="update_description_modal"><br>
                 <label for="update_supplier_modal">Supplier:</label>
                 <input type="text" id="update_supplier_modal" name="update_supplier_modal"><br>
 
@@ -138,7 +169,7 @@
                 Search Result
             </h2>
             <!-- Show all will be available for readonly/unauthenticated requests -->
-            <button class="showallbttn" onclick="resetSearch()" style="width:auto;">Show All Items</button>
+            <button class="showallbttn" onclick="resetSearch()">Show All Items</button>
             <form id="itemSearch" onsubmit="searchItem()">
                 <label for="item_name">Name:</label>
                 <input type="text" id="item_name" name="item_name" required><br>
@@ -148,7 +179,7 @@
                 <input type="text" id="supplier" name="supplier"><br>
                 <label for="quantity">Quantity:</label>
                 <input type="number" id="quantity" name="quantity"><br>
-                <div class="clearfix">
+                <div class="aside-buttons">
                     <button type="submit" class="submitbtn" id="submitbtn">Search Items</button>
                     <button type="button" onclick="document.getElementById('itemSearch').reset()"
                         class="cancelbtn">Cancel</button>
@@ -168,26 +199,33 @@
                 <tbody id="items">
                 </tbody>
             </table>
+            <div class="aside-buttons">
+                <!-- On Click button to remove checked items from list -->
 
-            <!-- On Click button to remove checked items from list -->
-            <button id="remove-selected-item-bttn" class="removebttn" onclick="removeCheckedItems()"
-                style="width:auto;">Remove Selected Items</button>
-            <button id="update-selected-item-bttn" class="removebttn"
-                onclick="document.getElementById('update_item_name_modal').value='Cannot Change Multiple Names at Once';document.getElementById('update_item_name_modal').readOnly=true;document.getElementById('update-pop-menu').style.display='block'"
-                style="width: auto;">Update Selected Items</button>
-
+                <button id="update-selected-item-bttn" class="updatebttn"
+                    onclick="document.getElementById('update_checked_item_name_modal').value='Cannot Change Multiple Names at Once';document.getElementById('update_checked_item_name_modal').readOnly=true;document.getElementById('update-checked-pop-menu').style.display='block'">Update
+                    Selected Items</button>
+                <button id="remove-selected-item-bttn" class="removebttn" onclick="removeCheckedItems()">Remove Selected
+                    Items</button>
+            </div>
         </aside>
 
-        <!-- CRUD operation buttons visibility managed by checkSession utility -->
-        <button id="add-item-bttn" class="admin-bttn"
-            onclick="document.getElementById('add-pop-menu').style.display='block'" style="width:auto;">Add
-            Item</button>
-        <button id="remove-item-bttn" class="admin-bttn"
-            onclick="document.getElementById('remove-pop-menu').style.display='block'" style="width:auto;">Remove
-            Item</button>
-        <button id="update-item-bttn" class="admin-bttn"
-            onclick="document.getElementById('update-pop-menu').style.display='block'" style="width:auto;">Update
-            Item</button>
+        <div class="admin-area">
+
+
+            <!-- CRUD operation buttons visibility managed by checkSession utility -->
+            <button id="add-item-bttn" class="admin-bttn"
+                onclick="document.getElementById('add-pop-menu').style.display='block'">Add
+                Item</button>
+            <button id="remove-item-bttn" class="admin-bttn"
+                onclick="document.getElementById('remove-pop-menu').style.display='block'">Remove
+                Item</button>
+            <button id="update-item-bttn" class="admin-bttn"
+                onclick=" document.getElementById('update_item_name_modal').style.readOnly = false;
+        document.getElementById('update_item_name_modal').value = '';document.getElementById('update-pop-menu').style.display='block'">Update
+                Item</button>
+
+        </div>
     </main>
 
 </body>
@@ -246,10 +284,47 @@
         console.log(checkedItems)
         event.preventDefault();
         const itemData = {
+            description: document.getElementById('update_checked_description_modal').value,
+            supplier: document.getElementById('update_checked_supplier_modal').value,
+            quantity: document.getElementById('update_checked_quantity_modal').value,
+            id: checkedItems
+        };
+        console.log(itemData);
+        fetch(`http://localhost:3000/update-item`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(() => {
+                alert('Updated item(s) successfully');
+                document.getElementById('update-checked-pop-menu').style.display = 'none';
+            })
+
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the item');
+            });
+    };
+</script>
+
+
+<script>
+    function updateItems() {
+        event.preventDefault();
+
+        const itemData = {
+            name: document.getElementById('update_item_name_modal').value,
             description: document.getElementById('update_description_modal').value,
             supplier: document.getElementById('update_supplier_modal').value,
             quantity: document.getElementById('update_quantity_modal').value,
-            id: checkedItems
         };
         console.log(itemData);
         fetch(`http://localhost:3000/update-item`, {
@@ -276,6 +351,7 @@
             });
     };
 </script>
+
 
 <script>
     function removeItem() {
