@@ -168,15 +168,7 @@ app.get('/check-session', (req, res) => {
  * Search database via provided inputs
  */
 app.post('/search-item', (req, res) => {
-    if (!tokens.verify(secret, req.cookies.csrf) || !req.cookies.sessionID) {
-        // If secret does not match, respond with appropriate 401 and message
-        // I did not want to indicate why they are unauthorized as that enables a new attack vector
-        res.status(401).send("UNAUTHORIZED ACCESS")
-        // End response
-        res.end()
-        // close out session
-        return
-    }
+    // Search operations are READONLY and do not require authentication
     const {
         name,
         description,
@@ -240,6 +232,7 @@ app.put('/update-item', (req, res) => {
         return
     }
     const {
+        name,
         description,
         supplier,
         quantity,
@@ -247,15 +240,27 @@ app.put('/update-item', (req, res) => {
     } = req.body;
     // Log parsed input
     console.log(description, supplier, quantity);
-    // Cannot/Will not update primary key `Name`
+    // Cannot/Will not update primary key `Name` for multiple items
     // If there are no filters provided the query will by default match and display all records
-    const sql = 'UPDATE items SET description=?, supplier=?, quantity=? WHERE id in (?)';
-    connection.query(sql, [description, supplier, quantity, id], (error, results) => {
-        if (error) throw error;
-        console.log(results)
-        res.send(JSON.stringify(results))
-        res.end()
-    });
+    if (!name) {
+        const sql = 'UPDATE items SET description=?, supplier=?, quantity=? WHERE id in (?)';
+        connection.query(sql, [description, supplier, quantity, id], (error, results) => {
+            if (error) throw error;
+            console.log(results)
+            res.send(JSON.stringify(results))
+            res.end()
+        });
+    }
+    if (name) {
+        const sql = `UPDATE items SET description=?, supplier=?, quantity=? WHERE NAME LIKE ?`;
+        connection.query(sql, [description, supplier, quantity, `%${name}%`], (error, results) => {
+            if (error) throw error;
+            console.log(results)
+            res.send(JSON.stringify(results))
+            res.end()
+        });
+    }
+
 });
 
 
